@@ -5,14 +5,22 @@ using UnityEngine.EventSystems;
 
 public class SelectPuzzle : MonoBehaviour {
 
+    public LevelLocker levelLocker;
     public GameObject selectPuzzleMenuPanel, puzzleLevelSelectPanel;
     public Animator selectPuzzleMenuAnim, puzzleLevelSelectAnim;
+    public SelectLevel selectLevel;
+    public PuzzleGameManager puzzleGameManager;
+    public StarsLocker starsLocker;
 
     private string selectedPuzzle;
 
     public void SelectedPuzzle()
     {
+        starsLocker.DeactivateStars();
         selectedPuzzle = EventSystem.current.currentSelectedGameObject.name; //Gives selected object name
+        puzzleGameManager.SetSelectedPuzzle(selectedPuzzle);  //pass puzzle type to the game manager
+        levelLocker.CheckWichLevelsAreUnlocked(selectedPuzzle);
+        selectLevel.SetSelectedPuzzle(selectedPuzzle);
         StartCoroutine(ShowPuzzleLevelSelectMenu());
     }
 
